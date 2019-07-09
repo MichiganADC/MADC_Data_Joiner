@@ -12,6 +12,7 @@ library(readr)
 library(dplyr)
 library(stringr)
 library(DT)
+library(shinythemes)
 
 DT_OPTIONS <- list(pageLength = 5, 
                    lengthMenu = c(5, 10, 25, 50),
@@ -20,8 +21,23 @@ DT_OPTIONS <- list(pageLength = 5,
 # Define UI for application that draws a histogram
 ui <- fluidPage(
   
+  # Set theme
+  theme = shinytheme("flatly"),
+  # theme = "bootstrap.css",
+  
   # Application title
-  titlePanel("MADC Data Joiner"),
+  # titlePanel("MADC Data Joiner",
+  #            windowTitle = "MADC Data Joiner"),
+  titlePanel(
+    tags$div(
+      tags$h1("MADC Data Joiner", 
+              style = "font-weight:900;text-align:center;"),
+      style = "background-color:#ECF0F1;border-radius:5px;"
+    ),
+    windowTitle = "MADC Data Joiner"
+  ),
+  
+  # hr(),
   
   # Sidebar with a slider input for number of bins 
   sidebarLayout(
@@ -70,28 +86,47 @@ ui <- fluidPage(
       # Input: `redcap_event_name` switch ----
       radioButtons(inputId = "ren_switch",
                    label = "Keep `redcap_event_name`",
-                   choices = c("no"  = "no",
-                               "yes" = "yes"),
+                   choices = c("No"  = "no",
+                               "Yes" = "yes"),
                    selected = "no",
                    inline = TRUE)
     ),
     
-    # Show a plot of the generated distribution
+    # Show the tables
     mainPanel(
       fluidRow(
         column(width = 6,
-               h1("X"),
-               # textOutput(outputId = "data_x_dims_out"),
-               dataTableOutput(outputId = "data_x_out")),
+               tags$div(
+                 tags$hr(),
+                 tags$h1("X", style = "text-align:center;font-weight:900;"),
+                 tags$hr(),
+                 dataTableOutput(outputId = "data_x_out"), 
+                 tags$hr(),
+                 style = "background-color:#fff7f7;"
+               )),
         column(width = 6,
-               h1("Y"),
-               # textOutput(outputId = "data_y_dims_out"),
-               dataTableOutput(outputId = "data_y_out"))
+               tags$div(
+                 tags$hr(),
+                 tags$h1("Y", style = "text-align:center;font-weight:900;"),
+                 tags$hr(),
+                 dataTableOutput(outputId = "data_y_out"), 
+                 tags$hr(),
+                 style = "background-color:#f7fff7;"
+               ))
       ),
-      hr(), hr(),
-      h1("Z"),
-      # textOutput(outputId = "data_z_dims_out"),
-      dataTableOutput(outputId = "data_z_out")
+      fluidRow(
+        column(width = 12,
+               tags$div(
+                 tags$hr(),
+                 tags$h1("Z", style = "text-align:center;font-weight:900;"),
+                 tags$hr(),
+                 dataTableOutput(outputId = "data_z_out"), 
+                 tags$hr(),
+                 style = "background-color:#fffff7;"
+               ))
+        # hr(), h1("Z"), hr(),
+        # dataTableOutput(outputId = "data_z_out"), hr() 
+      )
     )
   )
 )
@@ -171,7 +206,7 @@ server <- function(input, output) {
     req(input$data_x)
     datatable(df_data_x(), DT_OPTIONS)
   })
-
+  
   
   output$data_y_out <- renderDataTable({
     req(input$data_y)
