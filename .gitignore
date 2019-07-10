@@ -5,6 +5,10 @@
 .DS_Store
 *.csv
 *.xls*
+*.txt
+*.doc*
+*.pdf
 *.png
+*.sh
 scratchpad.R
 MADC_Data_Joiner/www/*
